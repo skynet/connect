@@ -42,11 +42,29 @@ describe('connect.static()', function(){
     .expect('baz', done);
   })
 
+  it('should not choke on auth-looking URL', function(done){
+    app.request()
+    .get('//todo@txt')
+    .expect(404, done);
+  })
+
+  it('should redirect directories with query string', function (done) {
+    app.request()
+    .get('/users?name=john')
+    .expect('Location', '/users/?name=john', done);
+  })
+
   it('should redirect directories', function(done){
     app.request()
     .get('/users')
-    .expect(301, done);
+    .expect(303, done);
   })
+
+  it('should not redirect incorrectly', function (done) {
+    app.request()
+    .get('/')
+    .expect(404, done);
+  });
 
   it('should support index.html', function(done){
     app.request()
@@ -292,6 +310,20 @@ describe('connect.static()', function(){
   })
 
   describe('when mounted', function(){
+    it('should redirect when index at mount point', function (done) {
+      var app = connect();
+
+      app.use('/users', connect.static('test/fixtures/users'));
+
+      app.request()
+      .get('/users')
+      .end(function (res) {
+        res.should.have.status(303);
+        res.headers.location.should.equal('/users/');
+        done();
+      });
+    });
+
     it('should redirect relative to the originalUrl', function(done){
       var app = connect();
 
@@ -301,7 +333,7 @@ describe('connect.static()', function(){
       .get('/static/users')
       .end(function(res){
         res.headers.location.should.equal('/static/users/');
-        res.should.have.status(301);
+        res.should.have.status(303);
         done();
       });
     })

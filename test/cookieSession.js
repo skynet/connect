@@ -349,7 +349,7 @@ describe('connect.cookieSession()', function(){
           .use(connect.cookieParser())
           .use(connect.cookieSession({ secret: 'keyboard cat', proxy: true, cookie: { secure: true }}))
           .use(respond);
-  
+
         app.request()
         .get('/')
         .set('X-Forwarded-Proto', 'https')
@@ -358,15 +358,45 @@ describe('connect.cookieSession()', function(){
           done();
         });
       })
+
+      it('should trust X-Forwarded-Proto when initial proxy is https', function(done){
+        var app = connect()
+          .use(connect.cookieParser())
+          .use(connect.cookieSession({ secret: 'keyboard cat', proxy: true, cookie: { secure: true }}))
+          .use(respond);
+
+        app.request()
+        .get('/')
+        .set('X-Forwarded-Proto', 'https, http')
+        .end(function(res){
+          res.headers.should.have.property('set-cookie');
+          done();
+        });
+      })
+
+      it('should not trust X-Forwarded-Proto when initial proxy is not https', function(done){
+        var app = connect()
+          .use(connect.cookieParser())
+          .use(connect.cookieSession({ secret: 'keyboard cat', proxy: true, cookie: { secure: true }}))
+          .use(respond);
+
+        app.request()
+        .get('/')
+        .set('X-Forwarded-Proto', 'http, https')
+        .end(function(res){
+          res.headers.should.not.have.property('set-cookie');
+          done();
+        });
+      })
     })
-  
+
     describe('when disabled', function(){
       it('should not trust X-Forwarded-Proto', function(done){
         var app = connect()
           .use(connect.cookieParser())
           .use(connect.cookieSession({ secret: 'keyboard cat', cookie: { secure: true }}))
           .use(respond);
-  
+
         app.request()
         .get('/')
         .set('X-Forwarded-Proto', 'https')
@@ -405,4 +435,46 @@ describe('connect.cookieSession()', function(){
       });
     });
   })
+
+  describe('when FQDN request pathname does not match cookie.path', function(){
+    it('should not set-cookie', function(done){
+      var app = connect()
+        .use(connect.cookieParser())
+        .use(connect.cookieSession({ secret: 'keyboard cat', cookie: { path: '/admin' }}))
+        .use(function(req, res, next){
+          req.session.foo = Math.random();
+          res.end();
+        });
+
+      app.request()
+      .get('http://example.com')
+      .end(function(res){
+        res.headers.should.not.have.property('set-cookie');
+        done();
+      });
+    })
+  })
+
+  describe('when FQDN request pathname matches cookie.path', function(){
+    it('should set cookie', function(done){
+      var app = connect()
+        .use(connect.cookieParser())
+        .use(connect.cookieSession({ secret: 'keyboard cat', cookie: { path: '/admin' }}))
+        .use(function(req, res, next){
+          req.session.foo = Math.random();
+          res.end();
+        });
+
+      app.request()
+      .get('http://example.com/admin/foo')
+      .end(function(res){
+        res.headers.should.have.property('set-cookie');
+        done();
+      });
+    })
+  })
+
+
+
+
 })

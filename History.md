@@ -1,3 +1,163 @@
+3.0
+===================
+
+ * move middleware to separate repos
+ * remove docs
+ * remove node patches
+ * remove connect(middleware...)
+
+2.13.0 / 2014-02-14
+===================
+
+ * fix typo in memory store warning #974 @rvagg
+ * compress: use compressible
+ * directory: add template option #990 @gottaloveit @Earl-Brown
+ * csrf: prevent deprecated warning with old sessions
+
+2.12.0 / 2013-12-10
+===================
+
+ * bump qs
+ * directory: sort folders before files
+ * directory: add folder icons
+ * directory: de-duplicate icons, details/mobile views #968 @simov
+ * errorHandler: end default 404 handler with a newline #972 @rlidwka
+ * session: remove long cookie expire check #870 @undoZen
+
+2.11.2 / 2013-12-01
+===================
+
+ * bump raw-body
+
+2.11.1 / 2013-11-27
+===================
+
+ * bump raw-body
+ * errorHandler: use `res.setHeader()` instead of `res.writeHead()` #949 @lo1tuma
+
+2.11.0 / 2013-10-29
+===================
+
+ * update bytes
+ * update uid2
+ * update negotiator
+ * sessions: add rolling session option #944 @ilmeo
+ * sessions: property set cookies when given FQDN
+ * cookieSessions: properly set cookies when given FQDN #948 @bmancini55
+ * proto: fix FQDN mounting when multiple handlers #945 @bmancini55
+
+2.10.1 / 2013-10-23
+===================
+
+ * fixed; fixed a bug with static middleware at root and trailing slashes #942 (@dougwilson)
+
+2.10.0 / 2013-10-22
+===================
+
+ * fixed: set headers written by writeHead before emitting 'header'
+ * fixed: mounted path should ignore querystrings on FQDNs #940 (@dougwilson)
+ * fixed: parsing protocol-relative URLs with @ as pathnames #938 (@dougwilson)
+ * fixed: fix static directory redirect for mount's root #937 (@dougwilson)
+ * fixed: setting set-cookie header when mixing arrays and strings #893 (@anuj123)
+ * bodyParser: optional verify function for urlencoded and json parsers for signing request bodies
+ * compress: compress checks content-length to check threshold
+ * compress: expose `res.flush()` for flushing responses
+ * cookieParser: pass options into node-cookie #803 (@cauldrath)
+ * errorHandler: replace `\n`s with `<br/>`s in error handler
+
+2.9.2 / 2013-10-18
+==================
+
+ * warn about multiparty and limit middleware deprecation for v3
+ * fix fully qualified domain name mounting. #920 (@dougwilson)
+ * directory: Fix potential security issue with serving files outside the root. #929 (@dougwilson)
+ * logger: store IP at beginning in case socket prematurely closes #930 (@dougwilson)
+
+2.9.1 / 2013-10-15
+==================
+
+ * update multiparty
+ * compress: Set vary header only if Content-Type passes filter #904
+ * directory: Fix directory middleware URI escaping #917 (@dougwilson)
+ * directory: Fix directory seperators for Windows #914 (@dougwilson)
+ * directory: Keep query string intact during directory redirect #913 (@dougwilson)
+ * directory: Fix paths in links #730 (@JacksonTian)
+ * errorHandler: Don't escape text/plain as HTML #875 (@johan)
+ * logger: Write '0' instead of '-' when response time is zero #910 (@dougwilson)
+ * logger: Log even when connections are aborted #760 (@dylanahsmith)
+ * methodOverride: Check req.body is an object #907 (@kbjr)
+ * multipart: Add .type back to file parts for backwards compatibility #912 (@dougwilson)
+ * multipart: Allow passing options to the Multiparty constructor #902 (@niftylettuce)
+
+2.9.0 / 2013-09-07
+==================
+
+ * multipart: add docs regarding tmpfiles
+ * multipart: add .name back to file parts
+ * multipart: use multiparty instead of formidable
+
+2.8.8 / 2013-09-02
+==================
+
+ * csrf: change to math.random() salt and remove csrfToken() callback
+
+2.8.7 / 2013-08-28
+==================
+
+ * csrf: prevent salt generation on every request, and add async req.csrfToken(fn)
+
+2.8.6 / 2013-08-28
+==================
+
+ * csrf: refactor to use HMAC tokens (BREACH attack)
+ * compress: add compression of SVG and common font files by default.
+
+2.8.5 / 2013-08-11
+==================
+
+ * add: compress Dart source files by default
+ * update fresh
+
+2.8.4 / 2013-07-08
+==================
+
+ * update send
+
+2.8.3 / 2013-07-04
+==================
+
+ * add a name back to static middleware ("staticMiddleware")
+ * fix .hasBody() utility to require transfer-encoding or content-length
+
+2.8.2 / 2013-07-03
+==================
+
+ * update send
+ * update cookie dep.
+ * add better debug() for middleware
+ * add whitelisting of supported methods to methodOverride()
+
+2.8.1 / 2013-06-27
+==================
+
+ * fix: escape req.method in 404 response
+
+2.8.0 / 2013-06-26
+==================
+
+ * add `threshold` option to `compress()` to prevent compression of small responses
+ * add support for vendor JSON mime types in json()
+ * add X-Forwarded-Proto initial https proxy support
+ * change static redirect to 303
+ * change octal escape sequences for strict mode
+ * change: replace utils.uid() with uid2 lib
+ * remove other "static" function name. Fixes #794
+ * fix: hasBody() should return false if Content-Length: 0
+
+2.7.11 / 2013-06-02
+==================
+
+ * update send
 
 2.7.10 / 2013-05-21
 ==================
